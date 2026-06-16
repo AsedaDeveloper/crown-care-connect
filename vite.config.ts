@@ -19,4 +19,16 @@ export default defineConfig(({ mode }) => ({
     },
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
   },
+  optimizeDeps: {
+    include: [
+      "@supabase/supabase-js",
+      "@supabase/auth-js",
+      "@supabase/postgrest-js",
+      "@supabase/realtime-js",
+      "@supabase/storage-js",
+      "@supabase/functions-js",
+      "framer-motion",
+      "react-router-dom",
+    ],
+  },
 }));

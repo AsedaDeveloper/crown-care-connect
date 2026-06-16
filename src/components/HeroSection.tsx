@@ -10,6 +10,8 @@ const HeroSection = () => {
           src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1920&q=80"
           alt="Editorial portrait of a Black person with beautiful natural afro hair"
           className="w-full h-full object-cover"
+          fetchPriority="high"
+          decoding="async"
         />
         {/* Semi-transparent dark green overlay for legibility */}
         <div className="absolute inset-0" style={{ backgroundColor: "rgba(0, 50, 30, 0.55)" }} />
