@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Loader2, Sparkles, CheckCircle2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 const SignupSection = () => {
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "" });
@@ -19,15 +21,32 @@ const SignupSection = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from("waitlist").insert({
-      name: form.name.trim(),
-      email: form.email.trim() || null,
-      whatsapp: form.whatsapp.trim() || null,
-    });
-    setLoading(false);
-    if (error) {
-      console.error("Supabase error:", error);
-      toast.error(error.message || "Something went wrong. Please try again.");
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Prefer": "return=minimal",
+        },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim() || null,
+          whatsapp: form.whatsapp.trim() || null,
+        }),
+      });
+      setLoading(false);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error("Signup error:", err);
+        toast.error(err.message || "Something went wrong. Please try again.");
+        return;
+      }
+    } catch (e) {
+      setLoading(false);
+      console.error("Network error:", e);
+      toast.error("Network error. Please try again.");
       return;
     }
     setDone(true);
