@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import SignupSection from "@/components/SignupSection";
 import Footer from "@/components/Footer";
 import ProductTour from "@/components/ProductTour";
 import PremiumModal from "@/components/PremiumModal";
@@ -21,7 +22,7 @@ const Index = () => {
       />
       <Navbar />
       <HeroSection />
-
+      <SignupSection />
 
       {/* Quick links section */}
       <section className="py-24 bg-background">

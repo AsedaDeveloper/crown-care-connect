@@ -1,0 +1,122 @@
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Loader2, Sparkles, CheckCircle2 } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+
+const SignupSection = () => {
+  const [form, setForm] = useState({ name: "", email: "", whatsapp: "" });
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((f) => ({ ...f, [field]: e.target.value }));
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || (!form.email.trim() && !form.whatsapp.trim())) {
+      toast.error("Please enter your name and at least an email or WhatsApp number.");
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from("waitlist").insert({
+      name: form.name.trim(),
+      email: form.email.trim() || null,
+      whatsapp: form.whatsapp.trim() || null,
+    });
+    setLoading(false);
+    if (error) {
+      console.error("Supabase error:", error);
+      toast.error(error.message || "Something went wrong. Please try again.");
+      return;
+    }
+    setDone(true);
+  };
+
+  return (
+    <section className="py-20 bg-muted/40 border-y border-border">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-xl mx-auto text-center"
+        >
+          {!done ? (
+            <>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-widest mb-4">
+                <Sparkles size={12} />
+                Early Access
+              </div>
+              <h2 className="text-3xl md:text-4xl font-serif text-foreground mb-3">
+                Be the first to know.
+              </h2>
+              <p className="text-muted-foreground mb-8">
+                Join the CrownCare community — get early access, expert tips, and updates delivered straight to you.
+              </p>
+
+              <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-left">
+                <input
+                  type="text"
+                  placeholder="Your name *"
+                  value={form.name}
+                  onChange={set("name")}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                />
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={form.email}
+                  onChange={set("email")}
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                />
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px bg-border" />
+                  <span className="text-xs text-muted-foreground">or</span>
+                  <div className="flex-1 h-px bg-border" />
+                </div>
+                <input
+                  type="tel"
+                  placeholder="WhatsApp number (e.g. 0501234567)"
+                  value={form.whatsapp}
+                  onChange={set("whatsapp")}
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-60 mt-1"
+                >
+                  {loading ? (
+                    <><Loader2 size={16} className="animate-spin" /> Saving…</>
+                  ) : (
+                    "Join the Community"
+                  )}
+                </button>
+                <p className="text-xs text-center text-muted-foreground">
+                  No spam. We'll only reach out with things worth your time.
+                </p>
+              </form>
+            </>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="py-8"
+            >
+              <CheckCircle2 size={48} className="text-primary mx-auto mb-4" />
+              <h3 className="text-2xl font-serif text-foreground mb-2">You're in! 🎉</h3>
+              <p className="text-muted-foreground">
+                Welcome to the CrownCare community. We'll be in touch soon.
+              </p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
+export default SignupSection;
