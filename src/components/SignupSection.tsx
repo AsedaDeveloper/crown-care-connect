@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const ZAPIER_WEBHOOK = "https://hooks.zapier.com/hooks/catch/27993072/43jdmhp/";
 
 const SignupSection = () => {
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "" });
@@ -43,6 +44,18 @@ const SignupSection = () => {
         toast.error(err.message || "Something went wrong. Please try again.");
         return;
       }
+
+      // Mirror to Google Sheets via Zapier webhook
+      fetch(ZAPIER_WEBHOOK, {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name.trim(),
+          email: form.email.trim() || "",
+          whatsapp: form.whatsapp.trim() || "",
+          signed_up_at: new Date().toISOString(),
+        }),
+      }).catch(() => {}); // silent fail — Supabase is the source of truth
+
     } catch (e) {
       setLoading(false);
       console.error("Network error:", e);
