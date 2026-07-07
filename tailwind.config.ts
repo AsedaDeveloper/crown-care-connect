@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["DM Sans", "sans-serif"],
-        serif: ["DM Serif Display", "serif"],
+        sans: ["Plus Jakarta Sans Variable", "sans-serif"],
+        serif: ["Fraunces Variable", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

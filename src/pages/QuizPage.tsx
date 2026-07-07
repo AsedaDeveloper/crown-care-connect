@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Share2, RotateCcw } from "lucide-react";
+import { ArrowRight, Share2, RotateCcw, Sparkles, Lock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PremiumModal from "@/components/PremiumModal";
 import { Button } from "@/components/ui/button";
 import { Seo } from "@/components/Seo";
 
@@ -68,6 +69,28 @@ const questions: Question[] = [
     microcopy: "Even 'I don't know' is a totally valid answer — we'll figure it out together 👑",
   },
   {
+    question: "When your hair dries after a wash, how much does it shrink?",
+    options: [
+      { emoji: "📏", label: "Barely — it looks about the same length", scores: { "3a": 4, "3b": 2 } },
+      { emoji: "📐", label: "A little — maybe a quarter shorter", scores: { "3b": 3, "3c": 3 } },
+      { emoji: "🌀", label: "About half my length disappears", scores: { "4a": 4, "4b": 2 } },
+      { emoji: "🤯", label: "More than half — people think I cut my hair", scores: { "4b": 4, "4c": 5 } },
+      { emoji: "🤷🏾", label: "I've never compared wet vs dry", scores: {} },
+    ],
+    microcopy: "Shrinkage is one of the biggest clues to your hair type — and it's a sign of healthy elasticity!",
+  },
+  {
+    question: "Look closely at your hair when it's soaking wet vs when it's dry. What do you notice?",
+    options: [
+      { emoji: "💧", label: "My curls look the same wet or dry", scores: { "3a": 3, "3b": 3 } },
+      { emoji: "🔍", label: "Defined curls when wet, slightly frizzy when dry", scores: { "3c": 3, "4a": 3 } },
+      { emoji: "☁️", label: "Defined coils when wet, but they vanish into fluff when dry", scores: { "4b": 4, "4c": 3 } },
+      { emoji: "🧶", label: "I can't see a curl pattern even when wet — more like a dense zigzag", scores: { "4c": 5 } },
+      { emoji: "😅", label: "Honestly, I've never studied it that closely", scores: {} },
+    ],
+    microcopy: "Wet hair shows your true pattern — dry hair shows how it behaves. Both matter!",
+  },
+  {
     question: "When your hair breaks off, what does the broken strand look like?",
     options: [
       { emoji: "🪶", label: "Really thin, almost see-through", scores: { "3a": 2, "3b": 1, "4a": 2 } },
@@ -104,6 +127,8 @@ const encouragements = [
   "Great start! Let's keep going 👑",
   "You're doing amazing! 🌟",
   "Almost halfway there! 💛",
+  "Keep it up — you're doing great! 👑",
+  "Nice one! Your crown is taking shape ✨",
   "You're doing great! Almost there 👑",
   "So close to meeting your crown! ✨",
   "Last question coming up! 🎉",
@@ -133,7 +158,7 @@ const profiles: Record<string, HairProfile> = {
     habit: "Scrunch your curls with a cotton t-shirt after washing instead of rubbing with a towel",
     habitMale: "Pat your hair dry with a cotton t-shirt instead of rubbing with a towel",
     product: "A lightweight leave-in conditioner",
-    slug: "type-3",
+    slug: "type-3a",
   },
   "3b": {
     type: "Type 3B",
@@ -145,7 +170,7 @@ const profiles: Record<string, HairProfile> = {
     habit: "Apply a curl cream to soaking wet hair right after washing — never let it dry without product",
     habitMale: "Keep your hair from drying out by applying a cream to it while it's still wet after washing",
     product: "A medium-hold curl defining cream",
-    slug: "type-3",
+    slug: "type-3b",
   },
   "3c": {
     type: "Type 3C",
@@ -157,7 +182,7 @@ const profiles: Record<string, HairProfile> = {
     habit: "Deep condition your hair once a week — leave it on for at least 20 minutes",
     habitMale: "Give your hair a deep moisture treatment once a week — leave it on for 20 minutes",
     product: "A thick deep conditioning mask",
-    slug: "type-3",
+    slug: "type-3c",
   },
   "4a": {
     type: "Type 4A",
@@ -205,6 +230,7 @@ const QuizPage = () => {
   const [loading, setLoading] = useState(false);
   const [finished, setFinished] = useState(false);
   const [showEncouragement, setShowEncouragement] = useState(false);
+  const [paywallOpen, setPaywallOpen] = useState(false);
 
   const handleAnswer = (option: Option) => {
     // Q1 sets gender
@@ -296,7 +322,7 @@ const QuizPage = () => {
               Discover Your Hair Type
             </h2>
             <p className="text-sm" style={{ color: "#a8c5a0" }}>
-              Answer 7 quick questions — no fancy hair knowledge needed.
+              Answer 9 quick questions — no fancy hair knowledge needed.
             </p>
           </div>
 
@@ -439,11 +465,30 @@ const QuizPage = () => {
                   </div>
                 </div>
 
+                {/* Premium routine CTA → paywall */}
+                <button
+                  onClick={() => setPaywallOpen(true)}
+                  className="w-full max-w-md mx-auto mb-4 px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 text-base transition-transform hover:scale-[1.02]"
+                  style={{ background: "#d4a843", color: "#1a3a2a" }}
+                >
+                  <Sparkles size={18} />
+                  Create your routine with CrownCare
+                  <span
+                    className="ml-1 inline-flex items-center gap-1 text-xs font-bold uppercase tracking-wide px-2 py-0.5 rounded-full"
+                    style={{ background: "#1a3a2a", color: "#d4a843" }}
+                  >
+                    <Lock size={10} /> Premium
+                  </span>
+                </button>
+                <p className="text-xs mb-6 max-w-md mx-auto" style={{ color: "#7ba87a" }}>
+                  A personalised week-by-week routine built for your {result.type} hair.
+                </p>
+
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <Link
                     to="/experts"
                     className="px-6 py-3 rounded-lg font-semibold inline-flex items-center justify-center gap-2 text-sm"
-                    style={{ background: "#d4a843", color: "#1a3a2a" }}
+                    style={{ background: "transparent", color: "#d4a843", border: "1px solid #3a6b52" }}
                   >
                     Talk to an expert about your crown <ArrowRight size={16} />
                   </Link>
@@ -474,6 +519,7 @@ const QuizPage = () => {
           </AnimatePresence>
         </div>
       </section>
+      <PremiumModal open={paywallOpen} onClose={() => setPaywallOpen(false)} />
       <Footer />
     </div>
   );

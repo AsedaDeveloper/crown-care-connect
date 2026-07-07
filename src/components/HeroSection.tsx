@@ -7,8 +7,8 @@ const HeroSection = () => {
       {/* Background image - editorial natural Black hair portrait */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=1920&q=80"
-          alt="Editorial portrait of a Black person with beautiful natural afro hair"
+          src="https://images.unsplash.com/photo-1544535379-b81233c1a64e?w=1920&q=80"
+          alt="Beautiful natural coily afro hair filling the frame, lit by warm sunlight"
           className="w-full h-full object-cover"
           fetchPriority="high"
           decoding="async"

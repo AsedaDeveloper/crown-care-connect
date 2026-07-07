@@ -65,11 +65,11 @@ const hairTypeData: Record<string, HairData> = {
     image: "https://images.unsplash.com/photo-1595956553066-fe24a8c33395?w=900&q=80",
     imageAlt: "Black person with medium springy 3B curls",
     overview:
-      "Type 3B hair has medium springy curls about the size of a Sharpie marker. It has more volume than 3A and is less prone to frizz, with a texture that ranges from fine to medium.",
+      "Type 3B hair has medium springy curls about the size of a Sharpie marker. It has more volume than 3A but is also drier and more prone to frizz, so keeping moisture in is the top priority.",
     characteristics: [
       "Medium springy ringlets (Sharpie size)",
       "More volume than 3A",
-      "Less prone to frizz",
+      "Drier and more frizz-prone than 3A",
       "Fine to medium texture",
       "Holds definition well when styled",
     ],
@@ -109,7 +109,7 @@ const hairTypeData: Record<string, HairData> = {
       "Tight corkscrew curls (pencil or straw size)",
       "Dense and full of volume",
       "Borders between curly and coily",
-      "Prone to shrinkage of 40–60%",
+      "Noticeable shrinkage when dry (often 30–50%)",
       "Needs consistent moisture",
     ],
     routine: [
@@ -225,10 +225,10 @@ const hairTypeData: Record<string, HairData> = {
     image: "https://images.unsplash.com/photo-1509783236416-c9ad59bae472?w=900&q=80",
     imageAlt: "Black person with dense 4C coily hair",
     overview:
-      "Type 4C is the tightest coil pattern and the most common among people of African descent. It has the most shrinkage of any hair type but is also the most versatile for styling — from TWAs to elaborate updos.",
+      "Type 4C is the tightest coil pattern and one of the most common hair types among people of African descent. It has the most shrinkage of any hair type but is also incredibly versatile for styling — from TWAs to elaborate updos.",
     characteristics: [
       "Very tight zigzag coils, often no visible curl pattern",
-      "Maximum shrinkage — up to 75–80%",
+      "Maximum shrinkage — up to 75% or more",
       "Dense, thick, and full of volume",
       "Most fragile of all hair types",
       "Incredibly versatile for styling",

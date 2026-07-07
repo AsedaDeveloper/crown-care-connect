@@ -7,13 +7,28 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 const ZAPIER_WEBHOOK = "https://hooks.zapier.com/hooks/catch/27993072/43jdmhp/";
 
+const AGE_RANGES = ["Under 18", "18–24", "25–34", "35–44", "45–54", "55+"];
+const GENDERS = ["Female", "Male", "Prefer not to say"];
+
+const inputCls =
+  "w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm";
+
 const SignupSection = () => {
-  const [form, setForm] = useState({ name: "", email: "", whatsapp: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    whatsapp: "",
+    age: "",
+    gender: "",
+    newsletter: true,
+  });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
 
-  const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm((f) => ({ ...f, [field]: e.target.value }));
+  const set =
+    (field: string) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
+      setForm((f) => ({ ...f, [field]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,6 +36,14 @@ const SignupSection = () => {
       toast.error("Please enter your name and at least an email or WhatsApp number.");
       return;
     }
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim() || null,
+      whatsapp: form.whatsapp.trim() || null,
+      age: form.age || null,
+      gender: form.gender || null,
+      newsletter: form.newsletter,
+    };
     setLoading(true);
     try {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
@@ -31,11 +54,7 @@ const SignupSection = () => {
           "Authorization": `Bearer ${SUPABASE_KEY}`,
           "Prefer": "return=minimal",
         },
-        body: JSON.stringify({
-          name: form.name.trim(),
-          email: form.email.trim() || null,
-          whatsapp: form.whatsapp.trim() || null,
-        }),
+        body: JSON.stringify(payload),
       });
       setLoading(false);
       if (!res.ok) {
@@ -49,9 +68,12 @@ const SignupSection = () => {
       fetch(ZAPIER_WEBHOOK, {
         method: "POST",
         body: JSON.stringify({
-          name: form.name.trim(),
-          email: form.email.trim() || "",
-          whatsapp: form.whatsapp.trim() || "",
+          name: payload.name,
+          email: payload.email || "",
+          whatsapp: payload.whatsapp || "",
+          age: payload.age || "",
+          gender: payload.gender || "",
+          newsletter: payload.newsletter ? "Yes" : "No",
           signed_up_at: new Date().toISOString(),
         }),
       }).catch(() => {}); // silent fail — Supabase is the source of truth
@@ -95,14 +117,36 @@ const SignupSection = () => {
                   value={form.name}
                   onChange={set("name")}
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className={inputCls}
                 />
+                <div className="grid grid-cols-2 gap-3">
+                  <select
+                    value={form.age}
+                    onChange={set("age")}
+                    className={`${inputCls} ${form.age ? "" : "text-muted-foreground"}`}
+                  >
+                    <option value="">Age range</option>
+                    {AGE_RANGES.map((a) => (
+                      <option key={a} value={a}>{a}</option>
+                    ))}
+                  </select>
+                  <select
+                    value={form.gender}
+                    onChange={set("gender")}
+                    className={`${inputCls} ${form.gender ? "" : "text-muted-foreground"}`}
+                  >
+                    <option value="">Gender</option>
+                    {GENDERS.map((g) => (
+                      <option key={g} value={g}>{g}</option>
+                    ))}
+                  </select>
+                </div>
                 <input
                   type="email"
                   placeholder="Email address"
                   value={form.email}
                   onChange={set("email")}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className={inputCls}
                 />
                 <div className="flex items-center gap-3">
                   <div className="flex-1 h-px bg-border" />
@@ -114,8 +158,19 @@ const SignupSection = () => {
                   placeholder="WhatsApp number (e.g. 0501234567)"
                   value={form.whatsapp}
                   onChange={set("whatsapp")}
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                  className={inputCls}
                 />
+                <label className="flex items-center gap-2.5 mt-1 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={form.newsletter}
+                    onChange={(e) => setForm((f) => ({ ...f, newsletter: e.target.checked }))}
+                    className="w-4 h-4 rounded border-border accent-[hsl(var(--primary))]"
+                  />
+                  <span className="text-sm text-muted-foreground">
+                    Subscribe to our newsletter for hair tips &amp; updates
+                  </span>
+                </label>
                 <button
                   type="submit"
                   disabled={loading}

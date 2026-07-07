@@ -25,7 +25,7 @@ const generalTips = [
   {
     icon: ShieldCheck,
     title: "Be Gentle",
-    text: "Avoid tight hairstyles that pull on edges. Traction alopecia from tight braids and weaves is a leading cause of hair loss in young adults.",
+    text: "Avoid tight hairstyles that pull on edges. Traction alopecia from tight braids and weaves affects about one in three women of African descent — and it's preventable.",
   },
   {
     icon: Flame,
