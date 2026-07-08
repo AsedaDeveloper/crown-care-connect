@@ -23,7 +23,7 @@ const hairTypeData: Record<string, HairData> = {
   "type-3a": {
     title: "Type 3A — Curly",
     subtypes: "Loose defined curls",
-    image: "https://images.unsplash.com/photo-1605980776566-0486c3ac7617?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1495490140452-5a226aef25d4?w=900&q=80",
     imageAlt: "Black woman with loose defined 3A curls",
     overview:
       "Type 3A hair has large loose curls about the size of a piece of sidewalk chalk. It's naturally shiny with a well defined curl pattern and tends to be fine in texture, which makes it light and bouncy but easily weighed down.",
@@ -62,7 +62,7 @@ const hairTypeData: Record<string, HairData> = {
   "type-3b": {
     title: "Type 3B — Curly",
     subtypes: "Springy ringlets",
-    image: "https://images.unsplash.com/photo-1595956553066-fe24a8c33395?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1656473040206-53753fbbc767?w=900&q=80",
     imageAlt: "Black person with medium springy 3B curls",
     overview:
       "Type 3B hair has medium springy curls about the size of a Sharpie marker. It has more volume than 3A but is also drier and more prone to frizz, so keeping moisture in is the top priority.",
@@ -101,7 +101,7 @@ const hairTypeData: Record<string, HairData> = {
   "type-3c": {
     title: "Type 3C — Curly",
     subtypes: "Tight corkscrews",
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1641522682419-7e52d83a8ce5?w=900&q=80",
     imageAlt: "Black person with tight 3C corkscrew curls",
     overview:
       "Type 3C hair has very tight corkscrew curls about the size of a pencil or straw. It's dense and full with lots of volume, sitting right on the border between curly and coily.",
@@ -140,7 +140,7 @@ const hairTypeData: Record<string, HairData> = {
   "type-4a": {
     title: "Type 4A — Coily",
     subtypes: "Tight S-pattern coils",
-    image: "https://images.unsplash.com/photo-1503104834685-7205e8607eb9?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1652118856074-fae1150da58b?w=900&q=80",
     imageAlt: "Black woman with defined 4A S-pattern coils",
     overview:
       "Type 4A hair has a defined coil pattern with tight S-shaped curls about the width of a crochet needle. It looks dense but individual strands are often fine and delicate.",
@@ -181,7 +181,7 @@ const hairTypeData: Record<string, HairData> = {
   "type-4b": {
     title: "Type 4B — Coily",
     subtypes: "Z-pattern coils",
-    image: "https://images.unsplash.com/photo-1604335398980-ededcadcc35a?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1577746838851-816a43ca8733?w=900&q=80",
     imageAlt: "Black person with fluffy 4B zigzag coils",
     overview:
       "Type 4B hair bends in sharp Z-shaped angles rather than curling. It's fluffy with less definition but huge volume — and one of the most fragile hair types, with extreme shrinkage that can hide your true length.",
@@ -222,7 +222,7 @@ const hairTypeData: Record<string, HairData> = {
   "type-4c": {
     title: "Type 4C — Coily",
     subtypes: "Tight zigzag coils",
-    image: "https://images.unsplash.com/photo-1509783236416-c9ad59bae472?w=900&q=80",
+    image: "https://images.unsplash.com/photo-1632765854612-9b02b6ec2b15?w=900&q=80",
     imageAlt: "Black person with dense 4C coily hair",
     overview:
       "Type 4C is the tightest coil pattern and one of the most common hair types among people of African descent. It has the most shrinkage of any hair type but is also incredibly versatile for styling — from TWAs to elaborate updos.",

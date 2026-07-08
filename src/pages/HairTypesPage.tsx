@@ -12,7 +12,7 @@ const hairTypes = [
     subtypes: "Loose defined curls",
     description:
       "Large loose curls about the size of a piece of sidewalk chalk. Naturally shiny with a well defined curl pattern and tends to be fine in texture.",
-    image: "https://images.unsplash.com/photo-1605980776566-0486c3ac7617?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1495490140452-5a226aef25d4?w=800&q=80",
     alt: "Black woman with loose defined 3A curls",
   },
   {
@@ -20,8 +20,8 @@ const hairTypes = [
     slug: "type-3b",
     subtypes: "Springy ringlets",
     description:
-      "Medium springy curls about the size of a Sharpie marker. More volume than 3A, less prone to frizz, and ranges from fine to medium texture.",
-    image: "https://images.unsplash.com/photo-1595956553066-fe24a8c33395?w=800&q=80",
+      "Medium springy curls about the size of a Sharpie marker. More volume than 3A, more prone to frizz and dryness, and ranges from fine to medium texture.",
+    image: "https://images.unsplash.com/photo-1656473040206-53753fbbc767?w=800&q=80",
     alt: "Black person with medium springy 3B curls",
   },
   {
@@ -30,7 +30,7 @@ const hairTypes = [
     subtypes: "Tight corkscrews",
     description:
       "Very tight corkscrew curls about the size of a pencil or straw. Dense and full with lots of volume — borders between curly and coily.",
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1641522682419-7e52d83a8ce5?w=800&q=80",
     alt: "Black person with tight 3C corkscrew curls",
   },
   {
@@ -39,7 +39,7 @@ const hairTypes = [
     subtypes: "Tight S-pattern coils",
     description:
       "Soft defined coils with a clear S-pattern. Appears dense but individual strands are often fine and fragile.",
-    image: "https://images.unsplash.com/photo-1503104834685-7205e8607eb9?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1652118856074-fae1150da58b?w=800&q=80",
     alt: "Black woman with defined 4A S-pattern coils",
   },
   {
@@ -48,7 +48,7 @@ const hairTypes = [
     subtypes: "Z-pattern coils",
     description:
       "Fluffy zigzag coils with less curl definition and big volume. Very prone to shrinkage—can shrink up to 75% of its true length.",
-    image: "https://images.unsplash.com/photo-1604335398980-ededcadcc35a?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1577746838851-816a43ca8733?w=800&q=80",
     alt: "Black person with fluffy 4B zigzag coils",
   },
   {
@@ -57,7 +57,7 @@ const hairTypes = [
     subtypes: "Tight zigzag coils",
     description:
       "Very tight coils with maximum shrinkage — full, dense, and incredibly versatile for styling. The most common texture among Africans.",
-    image: "https://images.unsplash.com/photo-1509783236416-c9ad59bae472?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1632765854612-9b02b6ec2b15?w=800&q=80",
     alt: "Black person with dense 4C coily hair",
   },
 ];
