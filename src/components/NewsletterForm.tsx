@@ -7,7 +7,6 @@ import { toast } from "sonner";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const ZAPIER_WEBHOOK = "https://hooks.zapier.com/hooks/catch/27993072/43jdmhp/";
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
@@ -49,20 +48,7 @@ const NewsletterForm = ({ variant = "inline" }: Props) => {
         toast.error("Could not subscribe. Try again.");
         return;
       }
-
-      // Mirror to Google Sheets via Zapier webhook (silent — Supabase is source of truth)
-      fetch(ZAPIER_WEBHOOK, {
-        method: "POST",
-        body: JSON.stringify({
-          name: "Newsletter subscriber",
-          email: parsed.data.email,
-          whatsapp: "",
-          age: "",
-          gender: "",
-          newsletter: "Yes",
-          signed_up_at: new Date().toISOString(),
-        }),
-      }).catch(() => {});
+      // Row is now in Supabase; the DB webhook mirrors it to Google Sheets.
 
       setEmail("");
       toast.success("Welcome to the CrownCare digest 👑");

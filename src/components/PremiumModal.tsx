@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Crown, X, Check, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 const PERKS = [
   "Monthly 1-on-1 session with a certified hair expert",
@@ -24,16 +26,37 @@ const PremiumModal = ({ open, onClose }: Props) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contact.trim()) return;
+    const value = contact.trim();
+    const isEmail = value.includes("@");
     setLoading(true);
-    const { error } = await supabase
-      .from("newsletter_subscribers")
-      .insert({ email: `[PREMIUM] ${contact.trim()}` });
-    setLoading(false);
-    if (error) {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Prefer": "return=minimal",
+        },
+        body: JSON.stringify({
+          name: "Premium interest",
+          email: isEmail ? value : null,
+          whatsapp: isEmail ? null : value,
+        }),
+      });
+      setLoading(false);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error("Premium interest error:", err);
+        toast.error("Something went wrong. Try again.");
+        return;
+      }
+      setDone(true);
+    } catch (err) {
+      setLoading(false);
+      console.error("Premium interest network error:", err);
       toast.error("Something went wrong. Try again.");
-      return;
     }
-    setDone(true);
   };
 
   const handleClose = () => {

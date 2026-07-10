@@ -5,7 +5,6 @@ import { toast } from "sonner";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-const ZAPIER_WEBHOOK = "https://hooks.zapier.com/hooks/catch/27993072/43jdmhp/";
 
 const AGE_RANGES = ["Under 18", "18–24", "25–34", "35–44", "45–54", "55+"];
 const GENDERS = ["Female", "Male", "Prefer not to say"];
@@ -63,21 +62,7 @@ const SignupSection = () => {
         toast.error(err.message || "Something went wrong. Please try again.");
         return;
       }
-
-      // Mirror to Google Sheets via Zapier webhook
-      fetch(ZAPIER_WEBHOOK, {
-        method: "POST",
-        body: JSON.stringify({
-          name: payload.name,
-          email: payload.email || "",
-          whatsapp: payload.whatsapp || "",
-          age: payload.age || "",
-          gender: payload.gender || "",
-          newsletter: payload.newsletter ? "Yes" : "No",
-          signed_up_at: new Date().toISOString(),
-        }),
-      }).catch(() => {}); // silent fail — Supabase is the source of truth
-
+      // Row is now in Supabase; the DB webhook mirrors it to Google Sheets.
     } catch (e) {
       setLoading(false);
       console.error("Network error:", e);
