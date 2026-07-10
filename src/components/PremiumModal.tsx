@@ -67,18 +67,16 @@ const PremiumModal = ({ open, onClose }: Props) => {
   return (
     <AnimatePresence>
       {open && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            key="pm-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={handleClose}
-            className="fixed inset-0 z-[8000] bg-black/60 backdrop-blur-sm"
-          />
-
-          {/* Modal */}
+        <motion.div
+          key="pm-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={handleClose}
+          className="fixed inset-0 z-[8000] flex items-center justify-center overflow-y-auto p-4 bg-black/60 backdrop-blur-sm"
+        >
+          {/* Modal card — centering handled by the flex parent so Framer Motion's
+              transform (scale/y) can't fight it */}
           <motion.div
             key="pm-modal"
             initial={{ opacity: 0, scale: 0.94, y: 20 }}
@@ -86,9 +84,9 @@ const PremiumModal = ({ open, onClose }: Props) => {
             exit={{ opacity: 0, scale: 0.94, y: 20 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             onClick={(e) => e.stopPropagation()}
-            className="fixed z-[8001] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md mx-auto px-4"
+            className="w-full max-w-md my-auto"
           >
-            <div className="rounded-2xl bg-card border border-border shadow-2xl overflow-hidden">
+            <div className="rounded-2xl bg-card border border-border shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto">
               {/* Header */}
               <div className="relative bg-primary px-6 pt-7 pb-6 text-primary-foreground">
                 <button
@@ -166,7 +164,7 @@ const PremiumModal = ({ open, onClose }: Props) => {
               </div>
             </div>
           </motion.div>
-        </>
+        </motion.div>
       )}
     </AnimatePresence>
   );
