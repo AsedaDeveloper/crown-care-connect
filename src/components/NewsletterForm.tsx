@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Mail } from "lucide-react";
 import { z } from "zod";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const ZAPIER_WEBHOOK = "https://hooks.zapier.com/hooks/catch/27993072/43jdmhp/";
 
 const schema = z.object({
   email: z.string().trim().email("Enter a valid email").max(255),
@@ -24,17 +27,50 @@ const NewsletterForm = ({ variant = "inline" }: Props) => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase
-      .from("newsletter_subscribers")
-      .insert({ email: parsed.data.email });
-    setLoading(false);
-    if (error) {
-      if (error.code === "23505") toast.success("You're already on the list 💌");
-      else toast.error("Could not subscribe. Try again.");
-      return;
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`,
+          "Prefer": "return=minimal",
+        },
+        body: JSON.stringify({
+          name: "Newsletter subscriber",
+          email: parsed.data.email,
+          newsletter: true,
+        }),
+      });
+      setLoading(false);
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        console.error("Newsletter error:", err);
+        toast.error("Could not subscribe. Try again.");
+        return;
+      }
+
+      // Mirror to Google Sheets via Zapier webhook (silent — Supabase is source of truth)
+      fetch(ZAPIER_WEBHOOK, {
+        method: "POST",
+        body: JSON.stringify({
+          name: "Newsletter subscriber",
+          email: parsed.data.email,
+          whatsapp: "",
+          age: "",
+          gender: "",
+          newsletter: "Yes",
+          signed_up_at: new Date().toISOString(),
+        }),
+      }).catch(() => {});
+
+      setEmail("");
+      toast.success("Welcome to the CrownCare digest 👑");
+    } catch (err) {
+      setLoading(false);
+      console.error("Newsletter network error:", err);
+      toast.error("Could not subscribe. Try again.");
     }
-    setEmail("");
-    toast.success("Welcome to the CrownCare digest 👑");
   };
 
   return (
