@@ -1,8 +1,11 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import ActivityPopups from "@/components/ActivityPopups";
 import Index from "./pages/Index.tsx";
 import HairTypesPage from "./pages/HairTypesPage.tsx";
 import HairTypeDetailPage from "./pages/HairTypeDetailPage.tsx";
@@ -51,7 +54,10 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ActivityPopups />
       </BrowserRouter>
+      <Analytics />
+      <SpeedInsights />
     </TooltipProvider>
   </QueryClientProvider>
 );

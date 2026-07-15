@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Loader2, Sparkles, CheckCircle2 } from "lucide-react";
+import { Loader2, Sparkles, CheckCircle2, Users } from "lucide-react";
 import { toast } from "sonner";
+import { fetchSignupCount } from "@/lib/activity";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -23,6 +24,11 @@ const SignupSection = () => {
   });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
+  const [count, setCount] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetchSignupCount().then(setCount);
+  }, []);
 
   const set =
     (field: string) =>
@@ -91,9 +97,24 @@ const SignupSection = () => {
               <h2 className="text-3xl md:text-4xl font-serif text-foreground mb-3">
                 Be the first to know.
               </h2>
-              <p className="text-muted-foreground mb-8">
+              <p className="text-muted-foreground mb-6">
                 Join the CrownCare community — get early access, expert tips, and updates delivered straight to you.
               </p>
+
+              {/* Live count of real signups */}
+              {count !== null && count > 0 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="inline-flex items-center gap-2 text-sm text-foreground mb-8"
+                >
+                  <Users size={14} className="text-primary" />
+                  <span>
+                    Join <strong className="font-semibold">{count.toLocaleString()}</strong>{" "}
+                    {count === 1 ? "person" : "others"} on the early-access list
+                  </span>
+                </motion.p>
+              )}
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-3 text-left">
                 <input
